@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: project_core_postgres
+    image: postgres:latest
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: core_app
+      PGDATA: /data/postgres
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - project_core_network
+
+networks:
+  project_core_network:
