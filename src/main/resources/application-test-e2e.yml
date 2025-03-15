@@ -1,0 +1,8 @@
+logging:
+  level:
+    root: info
+postgres:
+  url: localhost:5432
+  username: postgres
+  password: postgres
+  schema: core_app

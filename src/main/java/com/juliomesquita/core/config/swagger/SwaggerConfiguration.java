@@ -1,4 +1,4 @@
-package com.juliomesquita.core.config;
+package com.juliomesquita.core.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
