@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  undertow:
+    threads:
+      worker: 10
+      io: 2
+
+postgres:
+  url: localhost:5432
+  username: postgres
+  password: postgres
+  schema: core_app
