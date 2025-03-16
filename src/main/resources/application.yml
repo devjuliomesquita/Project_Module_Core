@@ -30,6 +30,12 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/Project_Core
+          jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
 
 server:
@@ -44,3 +50,10 @@ server:
     threads:
       worker: 64
       io: 4
+
+jwt:
+  auth:
+    converter:
+      resource-id: project-core-rest-api
+      principle-attribute: preferred_username
+
