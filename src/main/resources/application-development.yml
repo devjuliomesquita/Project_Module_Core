@@ -27,3 +27,10 @@ configs:
     allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers}
     exposed-headers: ${CORS_EXPOSED_HEADERS:Authorization,Content-Type,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers}
     max-age: ${CORS_MAX_AGE:3600}
+  keycloak:
+    realm: Project_Core
+    auth-server-url: http://localhost:9090
+    client-id: project-core-rest-api
+    client-secret: ${CLIENT_SECRET:6iTtiJEqX2riKWLzoCxuwSwfgNproo8A}
+    admin-user: project-core-rest-api
+    admin-password: 6iTtiJEqX2riKWLzoCxuwSwfgNproo8A

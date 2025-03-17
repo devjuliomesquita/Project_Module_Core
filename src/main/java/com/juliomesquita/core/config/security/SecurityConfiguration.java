@@ -39,6 +39,18 @@ public class SecurityConfiguration {
               .oauth2ResourceServer(oauth2 ->
                       oauth2.jwt(jwt ->
                               jwt.jwtAuthenticationConverter(this.jwtAuthenticationConverter)))
+              .authorizeHttpRequests(request -> request
+                      .requestMatchers(
+                              "/",
+                              "/auth/**"
+                      ).permitAll()
+                      .requestMatchers(
+                              "/swagger-ui.html/**",
+                              "/swagger-ui/**",
+                              "/v3/api-docs/**"
+                      ).permitAll()
+                      .anyRequest().authenticated()
+              )
 //              .authenticationProvider(this.authenticationProvider)
 //              .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 //              .formLogin(AbstractHttpConfigurer::disable);

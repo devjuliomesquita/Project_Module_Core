@@ -32,9 +32,22 @@ spring:
     url: ${spring.datasource.url}
   security:
     oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${configs.keycloak.client-id}
+            client-secret: ${configs.keycloak.client-secret}
+            scope: openid
+            provider: keycloak
+            authorization-grant-type: client_credentials
+        provider:
+          keycloak:
+            token-uri: ${configs.keycloak.auth-server-url}/realms/${configs.keycloak.realm}/protocol/openid-connect/token
+            issuer-uri: ${configs.keycloak.auth-server-url}/realms/${configs.keycloak.realm}
+            user-name-attribute: preferred_username
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:9090/realms/Project_Core
+          issuer-uri: ${configs.keycloak.auth-server-url}/realms/${configs.keycloak.realm}
           jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
 
