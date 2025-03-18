@@ -8,7 +8,8 @@ public record CreateUserKeycloak(
         @JsonProperty("username") String username,
          @JsonProperty("email") String email,
          @JsonProperty("firstName") String firstName,
+         @JsonProperty("lastName") String lastName,
          @JsonProperty("enabled") Boolean enabled,
         @JsonProperty("emailVerified") Boolean emailVerified,
-        List<CreateUserKeycloak> credentials) {
+        List<CredentialsUserKeycloak> credentials) {
 }
