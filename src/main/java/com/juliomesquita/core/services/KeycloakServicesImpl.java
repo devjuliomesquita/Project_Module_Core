@@ -1,11 +1,11 @@
 package com.juliomesquita.core.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.juliomesquita.core.services.dtos.KeycloakUserDto;
+import com.juliomesquita.core.services.keycloak.KeycloakFacade;
+import com.juliomesquita.core.services.keycloak.dtos.loginflow.CreateUserKeycloak;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
@@ -13,7 +13,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Map;
 
 @Service
-public class KeycloakServicesImpl implements KeycloakService {
+public class KeycloakServicesImpl {
    private static final ObjectMapper mapper = new ObjectMapper();
    @Value("${configs.keycloak.auth-server-url}")
    private String keycloakUrl;
@@ -55,8 +55,8 @@ public class KeycloakServicesImpl implements KeycloakService {
 
       Map<String, String> body = Map.of(
               "client_id",
-              "admin-cli",
               "grant_type",
+              "admin-cli",
               "password",
               "username",
               "admin",
@@ -78,8 +78,8 @@ public class KeycloakServicesImpl implements KeycloakService {
       }
    }
 
-   @Override
-   public String createUser(KeycloakUserDto data) {
+
+   public String createUser(CreateUserKeycloak data) {
 //      Map<String, Object> dataConverted = mapper.convertValue(
 //              data,
 //              Map.class
@@ -96,12 +96,12 @@ public class KeycloakServicesImpl implements KeycloakService {
 
    }
 
-   @Override
+
    public Map<String, Object> loginUser(String username, String password) {
       return Map.of();
    }
 
-   @Override
+
    public String logoutUser(String refreshToken) {
       return "";
    }

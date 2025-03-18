@@ -31,6 +31,6 @@ configs:
     realm: Project_Core
     auth-server-url: http://localhost:9090
     client-id: project-core-rest-api
-    client-secret: ${CLIENT_SECRET:6iTtiJEqX2riKWLzoCxuwSwfgNproo8A}
+    client-secret: ${CLIENT_SECRET:s7EQSZYHFMMboDdYyLXuXAAkHHHTK4z3}
     admin-user: project-core-rest-api
-    admin-password: 6iTtiJEqX2riKWLzoCxuwSwfgNproo8A
+    admin-password: s7EQSZYHFMMboDdYyLXuXAAkHHHTK4z3

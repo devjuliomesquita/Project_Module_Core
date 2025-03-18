@@ -1,21 +1,22 @@
 package com.juliomesquita.core.controllers;
 
-import com.juliomesquita.core.services.KeycloakService;
-import com.juliomesquita.core.services.dtos.KeycloakUserDto;
+import com.juliomesquita.core.services.keycloak.KeycloakFacade;
+import com.juliomesquita.core.services.keycloak.dtos.loginflow.CreateUserKeycloak;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
 public class TestController {
-   private final KeycloakService keycloakService;
+   private final KeycloakFacade keycloakFacade;
 
-   public TestController(KeycloakService keycloakService) {
-      this.keycloakService = keycloakService;
+   public TestController(KeycloakFacade keycloakFacade) {
+      this.keycloakFacade = keycloakFacade;
    }
 
    @PostMapping("/auth")
-   public String endpointPublic(@RequestBody KeycloakUserDto userDto){
-      return this.keycloakService.createUser(userDto);
+   public String endpointPublic(@RequestBody CreateUserKeycloak userDto){
+      return "";
+//      return this.keycloakFacade.createUser(userDto);
    }
 
    @GetMapping("/user")

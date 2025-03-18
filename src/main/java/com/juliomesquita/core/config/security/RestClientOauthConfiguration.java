@@ -10,15 +10,18 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientOauthConfiguration {
 
-   @Bean
+//   @Bean
    public RestClient keycloakRestClientOAuth(
            RestClient.Builder builder,
            OAuth2AuthorizedClientManager manager
    ) {
       final OAuth2ClientHttpRequestInterceptor interceptor = new OAuth2ClientHttpRequestInterceptor(manager);
       interceptor.setClientRegistrationIdResolver((HttpRequest request) -> "keycloak");
-      RestClient build = builder.requestInterceptor(interceptor).build();
-      System.out.println(build.toString());
-      return build;
+      return builder.requestInterceptor(interceptor).build();
+   }
+
+   @Bean
+   public RestClient restClient(){
+      return RestClient.builder().build();
    }
 }
