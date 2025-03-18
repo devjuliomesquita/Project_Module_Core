@@ -1,5 +1,6 @@
 package com.juliomesquita.core.services.keycloak.interfaces;
 
+import com.juliomesquita.core.services.keycloak.dtos.userflow.ListUserInformationKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
 
