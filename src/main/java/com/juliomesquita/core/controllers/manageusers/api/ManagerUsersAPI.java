@@ -1,6 +1,5 @@
 package com.juliomesquita.core.controllers.manageusers.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.juliomesquita.core.controllers.manageusers.dtos.*;
 import com.juliomesquita.core.controllers.shared.DefaultAuthAPIResponses;
 import com.juliomesquita.core.controllers.shared.DefaultPublicAPIResponses;
@@ -114,7 +113,7 @@ public interface ManagerUsersAPI {
            responses = @ApiResponse(responseCode = "200", description = "OK")
    )
    @DefaultAuthAPIResponses
-   @PutMapping("/users/{userId}")
+   @PutMapping("/users/{userId}/enable")
    ResponseEntity<?> activateOrDeactivateUser(
            @PathVariable(name = "userId") UUID userId,
            @RequestBody UserStatusRequest request
@@ -139,7 +138,7 @@ public interface ManagerUsersAPI {
            responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = ListUserInfosResponse.class))})
    )
    @DefaultAuthAPIResponses
-   @GetMapping("/users")
+   @GetMapping("/users/filters")
    ResponseEntity<ListUserInfosResponse> findUsersByFilter(
            @RequestParam(name = "Email") String email,
            @RequestParam(name = "Enabled", defaultValue = "true", required = false) Boolean enabled

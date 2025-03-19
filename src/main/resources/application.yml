@@ -70,3 +70,9 @@ jwt:
       resource-id: project-core-rest-api
       principle-attribute: preferred_username
 
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+    doc-expansion: none
+    operations-sorter: alpha
+    filter: true
