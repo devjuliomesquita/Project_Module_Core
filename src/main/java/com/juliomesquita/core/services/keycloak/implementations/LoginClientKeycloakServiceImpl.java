@@ -9,6 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
+import java.time.Instant;
 import java.util.Objects;
 
 @Component
@@ -22,6 +23,9 @@ public class LoginClientKeycloakServiceImpl implements LoginClientKeycloakServic
    @Value("${configs.keycloak.client-secret}")
    private String clientSecret;
 
+   private TokenClientKeycloak tokenClientKeycloakCache;
+   private Instant instanteTokenInspiration;
+
    private final RestClient restClient;
 
    public LoginClientKeycloakServiceImpl(final RestClient restClient) {
@@ -29,13 +33,18 @@ public class LoginClientKeycloakServiceImpl implements LoginClientKeycloakServic
    }
 
    @Override
-   public TokenClientKeycloak getTokenClient() {
+   public synchronized TokenClientKeycloak getTokenClient() {
+      if (tokenClientKeycloakCache != null && Instant.now().isBefore(instanteTokenInspiration)) {
+         System.out.println(tokenClientKeycloakCache.access_token());
+         return this.tokenClientKeycloakCache;
+      }
+
       MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
       body.add("client_id", clientId);
       body.add("client_secret", clientSecret);
       body.add("grant_type", "client_credentials");
 
-      return this.restClient
+      final TokenClientKeycloak tokenClientKeycloak = this.restClient
               .post()
               .uri(keycloakTokenClientUrl)
               .headers(headers -> headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED))
@@ -43,5 +52,11 @@ public class LoginClientKeycloakServiceImpl implements LoginClientKeycloakServic
               .retrieve()
               .toEntity(TokenClientKeycloak.class)
               .getBody();
+
+      this.tokenClientKeycloakCache = Objects.requireNonNull(tokenClientKeycloak);
+      this.instanteTokenInspiration = Instant.now().plusSeconds(
+              Objects.requireNonNull(tokenClientKeycloak).expires_in() - 10);
+      System.out.println(tokenClientKeycloak.access_token());
+      return tokenClientKeycloak;
    }
 }
