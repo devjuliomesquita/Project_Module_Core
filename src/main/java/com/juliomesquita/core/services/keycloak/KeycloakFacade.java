@@ -6,7 +6,10 @@ public interface KeycloakFacade {
    LoginFlowKeycloakService getLoginFlow();
 
    UserFlowKeycloakService getUserFlow();
+
    RolesFlowKeycloakService getRoleFlow();
+
    GroupsFlowKeycloakService getGroupFlow();
+
    AssociateRolesService getAssociateFlow();
 }

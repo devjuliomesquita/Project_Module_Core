@@ -55,10 +55,9 @@ public class AssociateRolesServiceImpl implements AssociateRolesService {
    public void disassociateRoleUser(@NonNull String userId, @NonNull List<AssociateRolesKeycloak> listRoles) {
       final TokenClientKeycloak tokenClient = this.loginClientKeycloakService.getTokenClient();
       final String uri = "/users/%s/role-mappings/realm".formatted(userId);
-      final String token = "Bearer %s".formatted(tokenClient.access_token());
 
       final HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
+      headers.setBearerAuth(tokenClient.access_token());
       headers.setContentType(MediaType.APPLICATION_JSON);
 
       final HttpEntity<List<AssociateRolesKeycloak>> req = new HttpEntity<>(listRoles, headers);
@@ -122,10 +121,9 @@ public class AssociateRolesServiceImpl implements AssociateRolesService {
    public void disassociateRoleGroup(@NonNull String groupId, @NonNull List<AssociateRolesKeycloak> listRoles) {
       final TokenClientKeycloak tokenClient = this.loginClientKeycloakService.getTokenClient();
       final String uri = "/groups/%s/role-mappings/realm".formatted(groupId);
-      final String token = "Bearer %s".formatted(tokenClient.access_token());
 
       final HttpHeaders headers = new HttpHeaders();
-      headers.setBearerAuth(token);
+      headers.setBearerAuth(tokenClient.access_token());
       headers.setContentType(MediaType.APPLICATION_JSON);
 
       final HttpEntity<List<AssociateRolesKeycloak>> req = new HttpEntity<>(listRoles, headers);

@@ -1,8 +1,7 @@
 package com.juliomesquita.core.services;
 
 import com.juliomesquita.core.services.keycloak.KeycloakFacade;
-import com.juliomesquita.core.services.keycloak.dtos.userflow.ListUserInformationKeycloak;
-import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.associateflow.AssociateRolesKeycloak;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +18,7 @@ public class StartApplication implements CommandLineRunner {
 
    @Override
    public void run(String... args) throws Exception {
-      List<UserInformationKeycloak> users = this.keycloakFacade.getUserFlow().findUsersByFilter("novoemail@email.com", true);
-      System.out.println(users);
+      this.keycloakFacade.getAssociateFlow().disassociateRoleUser("13d1b871-ea12-47cc-8841-4dc207e575e1",
+              List.of(new AssociateRolesKeycloak("7dff72ed-6c65-4aae-84fc-53123f4f5ba2", "1 Nível")));
    }
 }
