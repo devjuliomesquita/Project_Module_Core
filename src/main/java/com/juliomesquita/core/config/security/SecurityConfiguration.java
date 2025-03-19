@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Objects;
 
@@ -40,21 +38,13 @@ public class SecurityConfiguration {
                       oauth2.jwt(jwt ->
                               jwt.jwtAuthenticationConverter(this.jwtAuthenticationConverter)))
               .authorizeHttpRequests(request -> request
-                      .requestMatchers(
-                              "/",
-                              "/auth/**"
-                      ).permitAll()
-                      .requestMatchers(
-                              "/swagger-ui.html/**",
-                              "/swagger-ui/**",
-                              "/v3/api-docs/**"
-                      ).permitAll()
-                      .anyRequest().authenticated()
+                      .requestMatchers("/", "/auth/**")
+                      .permitAll()
+                      .requestMatchers("/swagger-ui.html/**", "/swagger-ui/**", "/v3/api-docs/**")
+                      .permitAll()
+                      .anyRequest()
+                      .authenticated()
               )
-//              .authenticationProvider(this.authenticationProvider)
-//              .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//              .formLogin(AbstractHttpConfigurer::disable);
-
               .build();
    }
 }

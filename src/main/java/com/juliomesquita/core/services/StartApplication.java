@@ -15,9 +15,6 @@ public class StartApplication implements CommandLineRunner {
 
    @Override
    public void run(String... args) throws Exception {
-      this.keycloakFacade.getUserFlow().findUsers();
-      this.keycloakFacade.getUserFlow().findUsers();
-      this.keycloakFacade.getUserFlow().findUsers();
-      this.keycloakFacade.getUserFlow().findUsers();
+
    }
 }

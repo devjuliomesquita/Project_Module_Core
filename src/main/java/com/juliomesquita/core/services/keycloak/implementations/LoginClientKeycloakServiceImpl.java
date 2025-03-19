@@ -35,7 +35,6 @@ public class LoginClientKeycloakServiceImpl implements LoginClientKeycloakServic
    @Override
    public synchronized TokenClientKeycloak getTokenClient() {
       if (tokenClientKeycloakCache != null && Instant.now().isBefore(instanteTokenInspiration)) {
-         System.out.println(tokenClientKeycloakCache.access_token());
          return this.tokenClientKeycloakCache;
       }
 
@@ -56,7 +55,6 @@ public class LoginClientKeycloakServiceImpl implements LoginClientKeycloakServic
       this.tokenClientKeycloakCache = Objects.requireNonNull(tokenClientKeycloak);
       this.instanteTokenInspiration = Instant.now().plusSeconds(
               Objects.requireNonNull(tokenClientKeycloak).expires_in() - 10);
-      System.out.println(tokenClientKeycloak.access_token());
       return tokenClientKeycloak;
    }
 }
