@@ -144,4 +144,150 @@ public interface ManagerUsersAPI {
            @RequestParam(name = "Email") String email,
            @RequestParam(name = "Enabled", defaultValue = "true", required = false) Boolean enabled
    );
+
+   @Operation(
+           operationId = "createRole",
+           summary = "Create role.",
+           description = "This endpoint receives roles data for create.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "201", description = "Created"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PostMapping("/role")
+   ResponseEntity<?> createRole(@RequestBody CreateRoleRequest request);
+
+   @Operation(
+           operationId = "updateRole",
+           summary = "Update role.",
+           description = "This endpoint receives roleName and data for role.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "OK"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PutMapping("/role/{roleName}")
+   ResponseEntity<?> updateRole(
+           @PathVariable(name = "roleName") String roleName,
+           @RequestBody CreateRoleRequest request
+   );
+
+   @Operation(
+           operationId = "deleteRole",
+           summary = "Delete Role.",
+           description = "This endpoint receives roleName for delete.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "204", description = "No Content")
+   )
+   @DefaultAuthAPIResponses
+   @DeleteMapping("/role/{roleName}")
+   ResponseEntity<?> deleteRole(
+           @PathVariable(name = "roleName") String roleName
+   );
+
+   @Operation(
+           operationId = "findRoles",
+           summary = "Find all roles.",
+           description = "This endpoint returns all roles.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListRolesInfoResponse.class))})
+   )
+   @DefaultAuthAPIResponses
+   @GetMapping("/role")
+   ResponseEntity<ListRolesInfoResponse> findRoles();
+
+   @Operation(
+           operationId = "createGroup",
+           summary = "Create group.",
+           description = "This endpoint receives group data for create.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "201", description = "Created"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PostMapping("/group")
+   ResponseEntity<?> createGroup(@RequestBody CreateGroupRequest request);
+
+   @Operation(
+           operationId = "updateGroup",
+           summary = "Update group.",
+           description = "This endpoint receives and data for group.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "OK"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PutMapping("/group/{groupId}")
+   ResponseEntity<?> updateGroup(
+           @PathVariable(name = "groupId") UUID groupId,
+           @RequestBody CreateGroupRequest request
+   );
+
+   @Operation(
+           operationId = "deleteGroup",
+           summary = "Delete Group.",
+           description = "This endpoint receives groupId for delete.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "204", description = "No Content")
+   )
+   @DefaultAuthAPIResponses
+   @DeleteMapping("/group/{groupId}")
+   ResponseEntity<?> deleteGroup(
+           @PathVariable(name = "groupId") UUID groupId
+   );
+
+   @Operation(
+           operationId = "findGroups",
+           summary = "Find all groups.",
+           description = "This endpoint returns all groups.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListGroupsInfosResponse.class))})
+   )
+   @DefaultAuthAPIResponses
+   @GetMapping("/groups")
+   ResponseEntity<ListGroupsInfosResponse> findGroups();
+
+   @Operation(
+           operationId = "associateOrDisassociateRoleUser",
+           summary = "Associate or disassociate Role a with user.",
+           description = "This endpoint receives userId and roles data for associate.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "Ok"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PostMapping("/associations/user/{userId}/role")
+   ResponseEntity<?> associateOrDisassociateRoleUser(
+           @PathVariable(name = "userId") UUID userId,
+           @RequestBody ListRolesRequest request
+   );
+
+   @Operation(
+           operationId = "associateOrDisassociateRoleGroup",
+           summary = "Associate or disassociate Role a with group.",
+           description = "This endpoint receives groupId and roles data for associate.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "Ok"),
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
+   )
+   @DefaultAuthAPIResponses
+   @PostMapping("/associations/group/{groupId}/role")
+   ResponseEntity<?> associateOrDisassociateRoleGroup(
+           @PathVariable(name = "groupId") UUID groupId,
+           @RequestBody ListRolesRequest request
+   );
+
+   @Operation(
+           operationId = "associateOrDisassociateUserGroup",
+           summary = "Associate or disassociate User a with group.",
+           description = "This endpoint receives groupId and userId for associate.",
+           tags = "Manager Users",
+           responses = @ApiResponse(responseCode = "200", description = "Ok")
+   )
+   @DefaultAuthAPIResponses
+   @PostMapping("/associations/group/{groupId}/user/{userId}")
+   ResponseEntity<?> associateOrDisassociateUserGroup(
+           @PathVariable(name = "groupId") UUID groupId,
+           @PathVariable(name = "userId") UUID userId
+   );
 }

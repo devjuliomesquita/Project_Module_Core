@@ -59,4 +59,59 @@ public class ManagerUsersController implements ManagerUsersAPI {
    public ResponseEntity<ListUserInfosResponse> findUsersByFilter(String email, Boolean enabled) {
       return null;
    }
+
+   @Override
+   public ResponseEntity<?> createRole(CreateRoleRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> updateRole(String roleName, CreateRoleRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> deleteRole(String roleName) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<ListRolesInfoResponse> findRoles() {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> createGroup(CreateGroupRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> updateGroup(UUID groupId, CreateGroupRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> deleteGroup(UUID groupId) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<ListGroupsInfosResponse> findGroups() {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> associateOrDisassociateRoleUser(UUID userId, ListRolesRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> associateOrDisassociateRoleGroup(UUID groupId, ListRolesRequest request) {
+      return null;
+   }
+
+   @Override
+   public ResponseEntity<?> associateOrDisassociateUserGroup(UUID groupId, UUID userId) {
+      return null;
+   }
 }
