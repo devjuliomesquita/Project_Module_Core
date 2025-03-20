@@ -4,13 +4,18 @@ import com.juliomesquita.core.controllers.manageusers.api.ManagerUsersAPI;
 import com.juliomesquita.core.controllers.manageusers.dtos.*;
 import com.juliomesquita.core.controllers.manageusers.presenters.ManagerUserPresenter;
 import com.juliomesquita.core.services.keycloak.KeycloakFacade;
+import com.juliomesquita.core.services.keycloak.dtos.associateflow.AssociateRolesKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.groupflow.GroupDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CreateUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CredentialsUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.TokenUserKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.roleflow.CreateRoleKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.roleflow.RoleDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,7 +68,8 @@ public class ManagerUsersController implements ManagerUsersAPI {
 
    @Override
    public ResponseEntity<?> resetPassword(final UUID userId, @RequestBody final ResetPasswordRequest request) {
-      final CredentialsUserKeycloak credentialsUserKeycloak = ManagerUserPresenter.credentialsUserKeycloak.apply(request);
+      final CredentialsUserKeycloak credentialsUserKeycloak = ManagerUserPresenter.credentialsUserKeycloak.apply(
+              request);
       this.keycloakFacade
               .getLoginFlow()
               .resetPassword(userId.toString(), credentialsUserKeycloak);
@@ -115,56 +121,115 @@ public class ManagerUsersController implements ManagerUsersAPI {
 
    @Override
    public ResponseEntity<?> createRole(@RequestBody final CreateRoleRequest request) {
-      return null;
+      final CreateRoleKeycloak createRoleKeycloak = ManagerUserPresenter.createRoleKeycloak.apply(request);
+      this.keycloakFacade
+              .getRoleFlow()
+              .createRole(createRoleKeycloak);
+      return new ResponseEntity<>(HttpStatus.CREATED);
    }
 
    @Override
    public ResponseEntity<?> updateRole(final String roleName, @RequestBody final CreateRoleRequest request) {
-      return null;
+      final CreateRoleKeycloak updateRole = ManagerUserPresenter.createRoleKeycloak.apply(request);
+      this.keycloakFacade
+              .getRoleFlow()
+              .updateRole(roleName, updateRole);
+      return ResponseEntity.ok().build();
    }
 
    @Override
    public ResponseEntity<?> deleteRole(final String roleName) {
-      return null;
+      this.keycloakFacade
+              .getRoleFlow()
+              .deleteRole(roleName);
+      return ResponseEntity.noContent().build();
    }
 
    @Override
    public ResponseEntity<ListRolesInfoResponse> findRoles() {
-      return null;
+      final List<RoleDataKeycloak> roles = this.keycloakFacade
+              .getRoleFlow()
+              .findRoles();
+      final ListRolesInfoResponse response = ManagerUserPresenter.listRoleInfoResponse.apply(roles);
+      return ResponseEntity.ok(response);
    }
 
    @Override
    public ResponseEntity<?> createGroup(@RequestBody final CreateGroupRequest request) {
-      return null;
+      this.keycloakFacade
+              .getGroupFlow()
+              .createGroup(request.name());
+      return new ResponseEntity<>(HttpStatus.CREATED);
    }
 
    @Override
    public ResponseEntity<?> updateGroup(final UUID groupId, @RequestBody final CreateGroupRequest request) {
-      return null;
+      this.keycloakFacade
+              .getGroupFlow()
+              .updateGroup(groupId.toString(), request.name());
+      return ResponseEntity.ok().build();
    }
 
    @Override
    public ResponseEntity<?> deleteGroup(final UUID groupId) {
-      return null;
+      this.keycloakFacade
+              .getGroupFlow()
+              .deleteGroup(groupId.toString());
+      return ResponseEntity.noContent().build();
    }
 
    @Override
    public ResponseEntity<ListGroupsInfosResponse> findGroups() {
-      return null;
+      final List<GroupDataKeycloak> groups = this.keycloakFacade
+              .getGroupFlow()
+              .findGroups();
+      final ListGroupsInfosResponse response = ManagerUserPresenter.listGroupInfoResponse.apply(groups);
+      return ResponseEntity.ok(response);
    }
 
    @Override
    public ResponseEntity<?> associateOrDisassociateRoleUser(final UUID userId, @RequestBody final ListRolesRequest request) {
-      return null;
+      final List<AssociateRolesKeycloak> roles = ManagerUserPresenter.listAssociateRolesKeycloak.apply(
+              request.listRoles());
+      if (request.associate()) {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .associateRoleUser(userId.toString(), roles);
+      } else {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .disassociateRoleUser(userId.toString(), roles);
+      }
+      return ResponseEntity.noContent().build();
    }
 
    @Override
    public ResponseEntity<?> associateOrDisassociateRoleGroup(final UUID groupId, @RequestBody final ListRolesRequest request) {
-      return null;
+      final List<AssociateRolesKeycloak> roles = ManagerUserPresenter.listAssociateRolesKeycloak.apply(
+              request.listRoles());
+      if (request.associate()) {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .associateRoleGroup(groupId.toString(), roles);
+      } else {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .disassociateRoleGroup(groupId.toString(), roles);
+      }
+      return ResponseEntity.noContent().build();
    }
 
    @Override
-   public ResponseEntity<?> associateOrDisassociateUserGroup(final UUID groupId, final UUID userId) {
-      return null;
+   public ResponseEntity<?> associateOrDisassociateUserGroup(final UUID groupId, final UUID userId, final Boolean associate) {
+      if (associate) {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .associateUserGroup(userId.toString(), groupId.toString());
+      } else {
+         this.keycloakFacade
+                 .getAssociateFlow()
+                 .disassociateUserGroup(userId.toString(), groupId.toString());
+      }
+      return ResponseEntity.noContent().build();
    }
 }

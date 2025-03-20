@@ -287,6 +287,7 @@ public interface ManagerUsersAPI {
    @PostMapping("/associations/group/{groupId}/user/{userId}")
    ResponseEntity<?> associateOrDisassociateUserGroup(
            @PathVariable(name = "groupId") UUID groupId,
-           @PathVariable(name = "userId") UUID userId
+           @PathVariable(name = "userId") UUID userId,
+           @RequestParam(name = "associate") Boolean associate
    );
 }

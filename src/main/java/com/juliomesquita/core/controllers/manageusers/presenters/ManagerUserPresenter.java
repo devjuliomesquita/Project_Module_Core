@@ -1,9 +1,14 @@
 package com.juliomesquita.core.controllers.manageusers.presenters;
 
 import com.juliomesquita.core.controllers.manageusers.dtos.*;
+import com.juliomesquita.core.services.keycloak.dtos.associateflow.AssociateRolesKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.groupflow.AccessGroupDataKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.groupflow.GroupDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CreateUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CredentialsUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.TokenUserKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.roleflow.CreateRoleKeycloak;
+import com.juliomesquita.core.services.keycloak.dtos.roleflow.RoleDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.ListUserInformationKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
@@ -49,7 +54,7 @@ public interface ManagerUserPresenter {
                    true
            );
 
-   Function<List<UserInformationKeycloak>, ListUserInfosResponse> listUserInfosResponse = output ->{
+   Function<List<UserInformationKeycloak>, ListUserInfosResponse> listUserInfosResponse = output -> {
       final List<UserInfosResponse> userInfosResponses = output.stream()
               .map(ManagerUserPresenter.userInfosResponse)
               .toList();
@@ -57,14 +62,73 @@ public interface ManagerUserPresenter {
    };
 
    Function<UserInformationKeycloak, UserInfosResponse> userInfosResponse = output ->
-      new UserInfosResponse(
-              output.id(),
-              output.username(),
-              output.firstName(),
-              output.lastName(),
-              output.email(),
-              output.emailVerified(),
-              output.createdTimestamp(),
-              output.enabled()
-      );
+           new UserInfosResponse(
+                   output.id(),
+                   output.username(),
+                   output.firstName(),
+                   output.lastName(),
+                   output.email(),
+                   output.emailVerified(),
+                   output.createdTimestamp(),
+                   output.enabled()
+           );
+
+   Function<CreateRoleRequest, CreateRoleKeycloak> createRoleKeycloak = output ->
+           new CreateRoleKeycloak(
+                   output.name(),
+                   output.description()
+           );
+
+   Function<RoleDataKeycloak, RoleInfoResponse> roleInfoResponse = output ->
+           new RoleInfoResponse(
+                   output.id(),
+                   output.name(),
+                   output.description(),
+                   output.composite(),
+                   output.clientRole(),
+                   output.containerId()
+           );
+
+   Function<List<RoleDataKeycloak>, ListRolesInfoResponse> listRoleInfoResponse = output -> {
+      final List<RoleInfoResponse> listRoles = output.stream()
+              .map(ManagerUserPresenter.roleInfoResponse)
+              .toList();
+      return new ListRolesInfoResponse(listRoles);
+   };
+
+
+   Function<AccessGroupDataKeycloak, AccessGroupDataResponse> accessGroupResponse = output ->
+           new AccessGroupDataResponse(
+                   output.view(),
+                   output.viewMembers(),
+                   output.manageMembers(),
+                   output.manage(),
+                   output.manageMembership()
+           );
+
+   Function<GroupDataKeycloak, GroupInfoResponse> groupInfoResponse = output ->
+           new GroupInfoResponse(
+                   output.id(),
+                   output.name(),
+                   output.path(),
+                   ManagerUserPresenter.accessGroupResponse.apply(output.access())
+           );
+
+   Function<List<GroupDataKeycloak>, ListGroupsInfosResponse> listGroupInfoResponse = output ->{
+      final List<GroupInfoResponse> groups = output.stream()
+              .map(ManagerUserPresenter.groupInfoResponse)
+              .toList();
+      return new ListGroupsInfosResponse(groups);
+   };
+
+   Function<ListRolesRequest.RoleRequest, AssociateRolesKeycloak> associateRolesKeycloak = output ->
+           new AssociateRolesKeycloak(
+                   output.id(),
+                   output.name()
+           );
+
+   Function<List<ListRolesRequest.RoleRequest>, List<AssociateRolesKeycloak>> listAssociateRolesKeycloak = output ->
+           output.stream()
+                   .map(ManagerUserPresenter.associateRolesKeycloak)
+                   .toList();
 }
