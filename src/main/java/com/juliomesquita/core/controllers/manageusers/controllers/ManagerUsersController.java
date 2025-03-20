@@ -13,6 +13,7 @@ import com.juliomesquita.core.services.keycloak.dtos.roleflow.CreateRoleKeycloak
 import com.juliomesquita.core.services.keycloak.dtos.roleflow.RoleDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
+import com.juliomesquita.core.shared.validations.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -21,9 +22,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
 
 @RestController
 public class ManagerUsersController implements ManagerUsersAPI {
@@ -37,43 +40,66 @@ public class ManagerUsersController implements ManagerUsersAPI {
 
    @Override
    public ResponseEntity<?> createUser(@RequestBody final CreateUserRequest request) {
+      Function<String, ResponseEntity<?>> onSuccess =
+              id -> ResponseEntity.created(URI.create("/user/" + id)).body(id);
+
       final CreateUserKeycloak aCommand = ManagerUserPresenter.createUserKeycloak.apply(request);
-      this.keycloakFacade.getLoginFlow().createUser(aCommand);
-      return new ResponseEntity<>(HttpStatus.CREATED);
+      return this.keycloakFacade.getLoginFlow().createUser(aCommand)
+              .fold(
+                      onError -> ResponseEntity.unprocessableEntity().body(onError),
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> loginUser(@RequestBody final LoginUserRequest request) {
-      final TokenUserKeycloak tokenUserKeycloak = this.keycloakFacade
+      Function<TokenUserKeycloak, ResponseEntity<?>> onSuccess =
+              token -> ResponseEntity.ok(ManagerUserPresenter.userLoginResponse.apply(token));
+
+      return this.keycloakFacade
               .getLoginFlow()
-              .loginUser(request.username(), request.password());
-      final UserLoginResponse response = ManagerUserPresenter.userLoginResponse.apply(tokenUserKeycloak);
-      return ResponseEntity.ok(response);
+              .loginUser(request.username(), request.password())
+              .fold(
+                      onError -> ResponseEntity.badRequest().body(onError),
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> refreshToken(@RequestBody final RefreshTokenRequest request) {
-      final TokenUserKeycloak tokenUserKeycloak = this.keycloakFacade
+      Function<TokenUserKeycloak, ResponseEntity<?>> onSuccess =
+              token -> ResponseEntity.ok(ManagerUserPresenter.userLoginResponse.apply(token));
+      return this.keycloakFacade
               .getLoginFlow()
-              .refreshTokenUser(request.refreshToken());
-      final UserLoginResponse response = ManagerUserPresenter.userLoginResponse.apply(tokenUserKeycloak);
-      return ResponseEntity.ok(response);
+              .refreshTokenUser(request.refreshToken())
+              .fold(
+                      onError -> ResponseEntity.badRequest().body(onError),
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> logoutUser(@RequestBody final RefreshTokenRequest request) {
-      this.keycloakFacade.getLoginFlow().logoutUser(request.refreshToken());
-      return ResponseEntity.noContent().build();
+      return this.keycloakFacade
+              .getLoginFlow()
+              .logoutUser(request.refreshToken())
+              .fold(
+                      onError -> ResponseEntity.badRequest().body(onError),
+                      onSuccess -> ResponseEntity.noContent().build()
+              );
    }
 
    @Override
    public ResponseEntity<?> resetPassword(final UUID userId, @RequestBody final ResetPasswordRequest request) {
-      final CredentialsUserKeycloak credentialsUserKeycloak = ManagerUserPresenter.credentialsUserKeycloak.apply(
-              request);
-      this.keycloakFacade
+      final CredentialsUserKeycloak credentialsUserKeycloak =
+              ManagerUserPresenter.credentialsUserKeycloak.apply(request);
+      return this.keycloakFacade
               .getLoginFlow()
-              .resetPassword(userId.toString(), credentialsUserKeycloak);
-      return ResponseEntity.ok().build();
+              .resetPassword(userId.toString(), credentialsUserKeycloak)
+              .fold(
+                      onError -> ResponseEntity.badRequest().body(onError),
+                      onSuccess -> ResponseEntity.ok().build()
+              );
    }
 
    @Override

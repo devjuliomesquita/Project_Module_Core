@@ -3,15 +3,17 @@ package com.juliomesquita.core.services.keycloak.interfaces;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CreateUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.CredentialsUserKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.loginflow.TokenUserKeycloak;
+import com.juliomesquita.core.shared.validations.Notification;
+import io.vavr.control.Either;
 
 public interface LoginFlowKeycloakService {
-   void createUser(CreateUserKeycloak data);
+   Either<Notification, String> createUser(CreateUserKeycloak data);
 
-   TokenUserKeycloak loginUser(String username, String password);
+   Either<Notification, TokenUserKeycloak> loginUser(String username, String password);
 
-   TokenUserKeycloak refreshTokenUser(String refreshToken);
+   Either<Notification, TokenUserKeycloak> refreshTokenUser(String refreshToken);
 
-   void logoutUser(String refreshToken);
+   Either<Notification, Void>  logoutUser(String refreshToken);
 
-   void resetPassword(String userId, CredentialsUserKeycloak credentials);
+   Either<Notification, Void>  resetPassword(String userId, CredentialsUserKeycloak credentials);
 }

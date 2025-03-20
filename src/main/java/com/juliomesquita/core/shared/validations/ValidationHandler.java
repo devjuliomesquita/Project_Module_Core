@@ -17,7 +17,7 @@ public interface ValidationHandler {
 
    default APIError firstError() {
       if (booleanHasError()) {
-         return getErrors().getFirst();
+         return getErrors().get(0);
       }
       return null;
    }
