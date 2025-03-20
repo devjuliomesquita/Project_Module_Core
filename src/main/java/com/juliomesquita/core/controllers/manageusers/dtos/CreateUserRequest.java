@@ -8,7 +8,8 @@ public record CreateUserRequest(
         @JsonProperty("firstName") String firstName,
         @JsonProperty("lastName") String lastName,
         @JsonProperty("enabled") Boolean enabled,
-        @JsonProperty("emailVerified") Boolean emailVerified
+        @JsonProperty("emailVerified") Boolean emailVerified,
+        @JsonProperty("password") String password
 ) {
    public static final String exampleRequest = """
            {
@@ -17,7 +18,8 @@ public record CreateUserRequest(
              "firstName": "John",
              "lastName": "Doe",
              "enabled": true,
-             "emailVerified": false
+             "emailVerified": false,
+             "password": "password",
            }
            """;
 }

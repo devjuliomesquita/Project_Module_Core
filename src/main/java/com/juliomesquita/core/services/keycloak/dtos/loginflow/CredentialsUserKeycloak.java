@@ -7,10 +7,10 @@ public record CredentialsUserKeycloak(
         @JsonProperty("value") String value,
         @JsonProperty("temporary") Boolean temporary
 ) {
-   public static CredentialsUserKeycloak create() {
+   public static CredentialsUserKeycloak create(final String value) {
       return new CredentialsUserKeycloak(
               "password",
-              "teste",
+              value,
               false
       );
    }
