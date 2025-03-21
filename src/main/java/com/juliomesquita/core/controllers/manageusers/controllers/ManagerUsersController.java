@@ -13,6 +13,8 @@ import com.juliomesquita.core.services.keycloak.dtos.roleflow.CreateRoleKeycloak
 import com.juliomesquita.core.services.keycloak.dtos.roleflow.RoleDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
+import com.juliomesquita.core.shared.pagination.Pagination;
+import com.juliomesquita.core.shared.pagination.SearchQuery;
 import com.juliomesquita.core.shared.validations.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,44 +107,58 @@ public class ManagerUsersController implements ManagerUsersAPI {
    @Override
    public ResponseEntity<?> updateUser(final UUID userId, @RequestBody final UpdateUserRequest request) {
       final UserDataKeycloak userDataKeycloak = ManagerUserPresenter.userDataKeycloak.apply(request);
-      this.keycloakFacade
+      return this.keycloakFacade
               .getUserFlow()
-              .updateUser(userId.toString(), userDataKeycloak);
-      return ResponseEntity.noContent().build();
+              .updateUser(userId.toString(), userDataKeycloak)
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.noContent().build()
+              );
    }
 
    @Override
    public ResponseEntity<?> deleteUser(final UUID userId) {
-      this.keycloakFacade
+      return this.keycloakFacade
               .getUserFlow()
-              .deleteUser(userId.toString());
-      return ResponseEntity.noContent().build();
+              .deleteUser(userId.toString())
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.noContent().build()
+              );
    }
 
    @Override
    public ResponseEntity<?> activateOrDeactivateUser(final UUID userId, @RequestBody final UserStatusRequest request) {
-      this.keycloakFacade
+      return this.keycloakFacade
               .getUserFlow()
-              .activateOrDeactivateUser(userId.toString(), request.enabled());
-      return ResponseEntity.ok().build();
+              .activateOrDeactivateUser(userId.toString(), request.enabled())
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.ok().build()
+              );
    }
 
    @Override
-   public ResponseEntity<ListUserInfosResponse> findUsers() {
-      final List<UserInformationKeycloak> users = this.keycloakFacade
-              .getUserFlow()
-              .findUsers();
-      final ListUserInfosResponse response = ManagerUserPresenter.listUserInfosResponse.apply(users);
-      return ResponseEntity.ok(response);
-   }
+   public ResponseEntity<?> findUsers(
+           final Integer currentPage,
+           final Integer itemsPerPage,
+           final String terms,
+           final String sort,
+           final String direction
+   ) {
+      final SearchQuery searchQuery = new SearchQuery(currentPage, itemsPerPage, terms, sort, direction);
 
-   @Override
-   public ResponseEntity<ListUserInfosResponse> findUsersByFilter(final String email, final Boolean enabled) {
-      final List<UserInformationKeycloak> users = this.keycloakFacade
+      final Function<Pagination<UserInformationKeycloak>, ResponseEntity<?>> onSuccess =
+              pagination -> ResponseEntity.ok(
+                      ManagerUserPresenter.paginationUserInfosResponse.apply(pagination));
+
+      return this.keycloakFacade
               .getUserFlow()
-              .findUsersByFilter(email, enabled);
-      final ListUserInfosResponse response = ManagerUserPresenter.listUserInfosResponse.apply(users);
-      return ResponseEntity.ok(response);
+              .findUsers(searchQuery)
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess
+              );
    }
 
    @Override

@@ -13,7 +13,7 @@ public interface LoginFlowKeycloakService {
 
    Either<Notification, TokenUserKeycloak> refreshTokenUser(String refreshToken);
 
-   Either<Notification, Void>  logoutUser(String refreshToken);
+   Either<Notification, Void> logoutUser(String refreshToken);
 
-   Either<Notification, Void>  resetPassword(String userId, CredentialsUserKeycloak credentials);
+   Either<Notification, Void> resetPassword(String userId, CredentialsUserKeycloak credentials);
 }

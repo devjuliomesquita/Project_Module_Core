@@ -12,6 +12,7 @@ import com.juliomesquita.core.services.keycloak.dtos.roleflow.RoleDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.ListUserInformationKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserDataKeycloak;
 import com.juliomesquita.core.services.keycloak.dtos.userflow.UserInformationKeycloak;
+import com.juliomesquita.core.shared.pagination.Pagination;
 
 import java.util.List;
 import java.util.function.Function;
@@ -54,11 +55,11 @@ public interface ManagerUserPresenter {
                    true
            );
 
-   Function<List<UserInformationKeycloak>, ListUserInfosResponse> listUserInfosResponse = output -> {
-      final List<UserInfosResponse> userInfosResponses = output.stream()
+   Function<Pagination<UserInformationKeycloak>, Pagination<UserInfosResponse>> paginationUserInfosResponse = output -> {
+      final List<UserInfosResponse> userInfosResponses = output.items().stream()
               .map(ManagerUserPresenter.userInfosResponse)
               .toList();
-      return new ListUserInfosResponse(userInfosResponses);
+      return output.convert(userInfosResponses);
    };
 
    Function<UserInformationKeycloak, UserInfosResponse> userInfosResponse = output ->
@@ -114,7 +115,7 @@ public interface ManagerUserPresenter {
                    ManagerUserPresenter.accessGroupResponse.apply(output.access())
            );
 
-   Function<List<GroupDataKeycloak>, ListGroupsInfosResponse> listGroupInfoResponse = output ->{
+   Function<List<GroupDataKeycloak>, ListGroupsInfosResponse> listGroupInfoResponse = output -> {
       final List<GroupInfoResponse> groups = output.stream()
               .map(ManagerUserPresenter.groupInfoResponse)
               .toList();

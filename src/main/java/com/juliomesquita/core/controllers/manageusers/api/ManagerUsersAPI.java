@@ -3,6 +3,7 @@ package com.juliomesquita.core.controllers.manageusers.api;
 import com.juliomesquita.core.controllers.manageusers.dtos.*;
 import com.juliomesquita.core.controllers.shared.DefaultAuthAPIResponses;
 import com.juliomesquita.core.controllers.shared.DefaultPublicAPIResponses;
+import com.juliomesquita.core.shared.pagination.Pagination;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -124,24 +125,16 @@ public interface ManagerUsersAPI {
            summary = "Find all users.",
            description = "This endpoint returns all users.",
            tags = "Manager Users",
-           responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = ListUserInfosResponse.class))})
+           responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = Pagination.class))})
    )
    @DefaultAuthAPIResponses
    @GetMapping("/users")
-   ResponseEntity<ListUserInfosResponse> findUsers();
-
-   @Operation(
-           operationId = "findUsersByFilter",
-           summary = "Find all users by filter.",
-           description = "This endpoint returns all users by filter.",
-           tags = "Manager Users",
-           responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = ListUserInfosResponse.class))})
-   )
-   @DefaultAuthAPIResponses
-   @GetMapping("/users/filters")
-   ResponseEntity<ListUserInfosResponse> findUsersByFilter(
-           @RequestParam(name = "Email") String email,
-           @RequestParam(name = "Enabled", defaultValue = "true", required = false) Boolean enabled
+   ResponseEntity<?> findUsers(
+           @RequestParam(name = "currentPage", defaultValue = "0") Integer currentPage,
+           @RequestParam(name = "itemsPerPage", defaultValue = "10") Integer itemsPerPage,
+           @RequestParam(name = "terms", defaultValue = "") String terms,
+           @RequestParam(name = "sort") String sort,
+           @RequestParam(name = "direction") String direction
    );
 
    @Operation(
