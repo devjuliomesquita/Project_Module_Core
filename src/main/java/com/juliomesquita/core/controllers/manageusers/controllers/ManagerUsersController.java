@@ -163,70 +163,103 @@ public class ManagerUsersController implements ManagerUsersAPI {
 
    @Override
    public ResponseEntity<?> createRole(@RequestBody final CreateRoleRequest request) {
+      Function<String, ResponseEntity<?>> onSuccess =
+              id -> ResponseEntity.created(URI.create("/role/" + id)).body(id);
+
       final CreateRoleKeycloak createRoleKeycloak = ManagerUserPresenter.createRoleKeycloak.apply(request);
-      this.keycloakFacade
+
+      return this.keycloakFacade
               .getRoleFlow()
-              .createRole(createRoleKeycloak);
-      return new ResponseEntity<>(HttpStatus.CREATED);
+              .createRole(createRoleKeycloak)
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> updateRole(final String roleName, @RequestBody final CreateRoleRequest request) {
       final CreateRoleKeycloak updateRole = ManagerUserPresenter.createRoleKeycloak.apply(request);
-      this.keycloakFacade
+      return this.keycloakFacade
               .getRoleFlow()
-              .updateRole(roleName, updateRole);
-      return ResponseEntity.ok().build();
+              .updateRole(roleName, updateRole)
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.ok().build()
+              );
    }
 
    @Override
    public ResponseEntity<?> deleteRole(final String roleName) {
-      this.keycloakFacade
+      return this.keycloakFacade
               .getRoleFlow()
-              .deleteRole(roleName);
-      return ResponseEntity.noContent().build();
+              .deleteRole(roleName)
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.noContent().build()
+              );
    }
 
    @Override
-   public ResponseEntity<ListRolesInfoResponse> findRoles() {
-      final List<RoleDataKeycloak> roles = this.keycloakFacade
+   public ResponseEntity<?> findRoles() {
+      Function<List<RoleDataKeycloak>, ResponseEntity<?>> onSuccess =
+              roles -> ResponseEntity.ok(ManagerUserPresenter.listRoleInfoResponse.apply(roles));
+      return this.keycloakFacade
               .getRoleFlow()
-              .findRoles();
-      final ListRolesInfoResponse response = ManagerUserPresenter.listRoleInfoResponse.apply(roles);
-      return ResponseEntity.ok(response);
+              .findRoles()
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> createGroup(@RequestBody final CreateGroupRequest request) {
-      this.keycloakFacade
+      Function<String, ResponseEntity<?>> onSuccess =
+              id -> ResponseEntity.created(URI.create("/group/" + id)).body(id);
+      return this.keycloakFacade
               .getGroupFlow()
-              .createGroup(request.name());
-      return new ResponseEntity<>(HttpStatus.CREATED);
+              .createGroup(request.name())
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess
+              );
    }
 
    @Override
    public ResponseEntity<?> updateGroup(final UUID groupId, @RequestBody final CreateGroupRequest request) {
-      this.keycloakFacade
+      return this.keycloakFacade
               .getGroupFlow()
-              .updateGroup(groupId.toString(), request.name());
-      return ResponseEntity.ok().build();
+              .updateGroup(groupId.toString(), request.name())
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.ok().build()
+              );
    }
 
    @Override
    public ResponseEntity<?> deleteGroup(final UUID groupId) {
-      this.keycloakFacade
+      return this.keycloakFacade
               .getGroupFlow()
-              .deleteGroup(groupId.toString());
-      return ResponseEntity.noContent().build();
+              .deleteGroup(groupId.toString())
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess -> ResponseEntity.noContent().build()
+              );
    }
 
    @Override
-   public ResponseEntity<ListGroupsInfosResponse> findGroups() {
-      final List<GroupDataKeycloak> groups = this.keycloakFacade
+   public ResponseEntity<?> findGroups() {
+      Function<List<GroupDataKeycloak>, ResponseEntity<?>> onSuccess =
+              groups -> ResponseEntity.ok(ManagerUserPresenter.listGroupInfoResponse.apply(groups));
+
+      return this.keycloakFacade
               .getGroupFlow()
-              .findGroups();
-      final ListGroupsInfosResponse response = ManagerUserPresenter.listGroupInfoResponse.apply(groups);
-      return ResponseEntity.ok(response);
+              .findGroups()
+              .fold(
+                      ResponseEntity.badRequest()::body,
+                      onSuccess
+              );
    }
 
    @Override

@@ -186,7 +186,7 @@ public interface ManagerUsersAPI {
    )
    @DefaultAuthAPIResponses
    @GetMapping("/role")
-   ResponseEntity<ListRolesInfoResponse> findRoles();
+   ResponseEntity<?> findRoles();
 
    @Operation(
            operationId = "createGroup",
@@ -237,7 +237,7 @@ public interface ManagerUsersAPI {
    )
    @DefaultAuthAPIResponses
    @GetMapping("/groups")
-   ResponseEntity<ListGroupsInfosResponse> findGroups();
+   ResponseEntity<?> findGroups();
 
    @Operation(
            operationId = "associateOrDisassociateRoleUser",

@@ -1,15 +1,17 @@
 package com.juliomesquita.core.services.keycloak.interfaces;
 
 import com.juliomesquita.core.services.keycloak.dtos.groupflow.GroupDataKeycloak;
+import com.juliomesquita.core.shared.validations.Notification;
+import io.vavr.control.Either;
 
 import java.util.List;
 
 public interface GroupsFlowKeycloakService {
-   void createGroup(String groupName);
+   Either<Notification, String> createGroup(String groupName);
 
-   void updateGroup(String id, String groupName);
+   Either<Notification, Void> updateGroup(String id, String groupName);
 
-   void deleteGroup(String id);
+   Either<Notification, Void> deleteGroup(String id);
 
-   List<GroupDataKeycloak> findGroups();
+   Either<Notification, List<GroupDataKeycloak>> findGroups();
 }
