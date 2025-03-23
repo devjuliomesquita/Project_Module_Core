@@ -16,19 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@RequestMapping(value = "/associations")
 @Tag(name = "Manager Associations", description = "API de gerenciamento de associações.")
 public interface ManagerAssociationFlow {
    @Operation(
            operationId = "associateOrDisassociateRoleUser",
            summary = "Associate or disassociate Role a with user.",
            description = "This endpoint receives userId and roles data for associate.",
-           tags = "Manager Associations",
+           tags = {"Manager Associations"},
            responses = @ApiResponse(responseCode = "200", description = "Ok"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PostMapping("/user/{userId}/role")
+   @PostMapping("/associations/user/{userId}/role")
    ResponseEntity<?> associateOrDisassociateRoleUser(
            @PathVariable(name = "userId") UUID userId,
            @RequestBody ListRolesRequest request
@@ -38,12 +37,12 @@ public interface ManagerAssociationFlow {
            operationId = "associateOrDisassociateRoleGroup",
            summary = "Associate or disassociate Role a with group.",
            description = "This endpoint receives groupId and roles data for associate.",
-           tags = "Manager Associations",
+           tags = {"Manager Associations"},
            responses = @ApiResponse(responseCode = "200", description = "Ok"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PostMapping("/group/{groupId}/role")
+   @PostMapping("/associations/group/{groupId}/role")
    ResponseEntity<?> associateOrDisassociateRoleGroup(
            @PathVariable(name = "groupId") UUID groupId,
            @RequestBody ListRolesRequest request
@@ -53,11 +52,11 @@ public interface ManagerAssociationFlow {
            operationId = "associateOrDisassociateUserGroup",
            summary = "Associate or disassociate User a with group.",
            description = "This endpoint receives groupId and userId for associate.",
-           tags = "Manager Associations",
+           tags = {"Manager Associations"},
            responses = @ApiResponse(responseCode = "200", description = "Ok")
    )
    @DefaultAuthAPIResponses
-   @PostMapping("/group/{groupId}/user/{userId}")
+   @PostMapping("/associations/group/{groupId}/user/{userId}")
    ResponseEntity<?> associateOrDisassociateUserGroup(
            @PathVariable(name = "groupId") UUID groupId,
            @PathVariable(name = "userId") UUID userId,

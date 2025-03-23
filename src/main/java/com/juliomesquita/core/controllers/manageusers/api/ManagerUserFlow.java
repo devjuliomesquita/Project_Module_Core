@@ -16,31 +16,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping(value = "/users")
-@Tag(name = "Manager Users Flow", description = "API de gerenciamento de usuários.")
+
+@Tag(name = "Manager Users", description = "API de gerenciamento de usuários.")
 public interface ManagerUserFlow {
    @Operation(
            operationId = "createUser",
            summary = "Create user.",
            description = "This endpoint receives user data for creation.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "201", description = "Created"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateUserRequest.exampleRequest))})
    )
    @DefaultPublicAPIResponses
-   @PostMapping()
+   @PostMapping("/users")
    ResponseEntity<?> createUser(@RequestBody CreateUserRequest request);
 
    @Operation(
            operationId = "updateUser",
            summary = "Update user data.",
            description = "This endpoint receives user data for update.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = UpdateUserRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PutMapping("/{userId}")
+   @PutMapping("/users/{userId}")
    ResponseEntity<?> updateUser(
            @PathVariable(name = "userId") UUID userId,
            @RequestBody UpdateUserRequest request
@@ -50,22 +50,22 @@ public interface ManagerUserFlow {
            operationId = "deleteUser",
            summary = "Delete user.",
            description = "This endpoint receives userId for deleted.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "204", description = "No Content")
    )
    @DefaultAuthAPIResponses
-   @DeleteMapping("/{userId}")
+   @DeleteMapping("/users/{userId}")
    ResponseEntity<?> deleteUser(@PathVariable(name = "userId") UUID userId);
 
    @Operation(
            operationId = "activateOrDeactivateUser",
            summary = "Activate or deactivate user.",
            description = "This endpoint receives userId and data for user.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "200", description = "OK")
    )
    @DefaultAuthAPIResponses
-   @PutMapping("/{userId}/enable")
+   @PutMapping("/users/{userId}/enable")
    ResponseEntity<?> activateOrDeactivateUser(
            @PathVariable(name = "userId") UUID userId,
            @RequestBody UserStatusRequest request
@@ -75,11 +75,11 @@ public interface ManagerUserFlow {
            operationId = "findUsers",
            summary = "Find all users.",
            description = "This endpoint returns all users.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = Pagination.class))})
    )
    @DefaultAuthAPIResponses
-   @GetMapping()
+   @GetMapping("/users")
    ResponseEntity<?> findUsers(
            @RequestParam(name = "currentPage", defaultValue = "0") Integer currentPage,
            @RequestParam(name = "itemsPerPage", defaultValue = "10") Integer itemsPerPage,
@@ -92,12 +92,12 @@ public interface ManagerUserFlow {
            operationId = "resetPassword",
            summary = "Reset User password.",
            description = "This endpoint receives new password and userId.",
-           tags = "Manager Users Flow",
+           tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = UserLoginResponse.class))}),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ResetPasswordRequest.exampleRequest))})
    )
    @DefaultPublicAPIResponses
-   @PutMapping("/{userId}/reset-password")
+   @PutMapping("/users/{userId}/reset-password")
    ResponseEntity<?> resetPassword(
            @PathVariable(name = "userId") UUID userId,
            @RequestBody ResetPasswordRequest request

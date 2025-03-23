@@ -13,31 +13,30 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = "/roles")
 @Tag(name = "Manager Roles", description = "API de gerenciamento de permissões.")
 public interface ManagerRoleFlow {
    @Operation(
            operationId = "createRole",
            summary = "Create role.",
            description = "This endpoint receives roles data for create.",
-           tags = "Manager Roles",
+           tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "201", description = "Created"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PostMapping()
+   @PostMapping("/roles")
    ResponseEntity<?> createRole(@RequestBody CreateRoleRequest request);
 
    @Operation(
            operationId = "updateRole",
            summary = "Update role.",
            description = "This endpoint receives roleName and data for role.",
-           tags = "Manager Roles",
+           tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PutMapping("/{roleName}")
+   @PutMapping("/roles/{roleName}")
    ResponseEntity<?> updateRole(
            @PathVariable(name = "roleName") String roleName,
            @RequestBody CreateRoleRequest request
@@ -47,11 +46,11 @@ public interface ManagerRoleFlow {
            operationId = "deleteRole",
            summary = "Delete Role.",
            description = "This endpoint receives roleName for delete.",
-           tags = "Manager Roles",
+           tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "204", description = "No Content")
    )
    @DefaultAuthAPIResponses
-   @DeleteMapping("/{roleName}")
+   @DeleteMapping("/roles/{roleName}")
    ResponseEntity<?> deleteRole(
            @PathVariable(name = "roleName") String roleName
    );
@@ -60,10 +59,10 @@ public interface ManagerRoleFlow {
            operationId = "findRoles",
            summary = "Find all roles.",
            description = "This endpoint returns all roles.",
-           tags = "Manager Roles",
+           tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListRolesInfoResponse.class))})
    )
    @DefaultAuthAPIResponses
-   @GetMapping()
+   @GetMapping("/roles")
    ResponseEntity<?> findRoles();
 }

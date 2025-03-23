@@ -71,6 +71,8 @@ jwt:
       principle-attribute: preferred_username
 
 springdoc:
+  api-docs:
+    enabled: true
   swagger-ui:
     tags-sorter: alpha
     doc-expansion: none

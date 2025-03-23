@@ -12,14 +12,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping(value = "/manager-user")
+
 @Tag(name = "Manager Token", description = "API de gerenciamento de token.")
-public interface ManagerUsersAPI extends ManagerUserFlow, ManagerRoleFlow, ManagerGroupFlow, ManagerAssociationFlow {
+public interface ManagerTokenFlow {
    @Operation(
            operationId = "loginUser",
            summary = "Login user.",
            description = "This endpoint receives username and password for login.",
-           tags = "Manager Token",
+           tags = {"Manager Token"},
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = UserLoginResponse.class))}),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = LoginUserRequest.exampleRequest))})
    )
@@ -31,7 +31,7 @@ public interface ManagerUsersAPI extends ManagerUserFlow, ManagerRoleFlow, Manag
            operationId = "refreshToken",
            summary = "Refresh token user.",
            description = "This endpoint receives refresh token and returns new login token.",
-           tags = "Manager Token",
+           tags = {"Manager Token"},
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = UserLoginResponse.class))})
    )
    @DefaultPublicAPIResponses
@@ -42,7 +42,7 @@ public interface ManagerUsersAPI extends ManagerUserFlow, ManagerRoleFlow, Manag
            operationId = "logoutUser",
            summary = "Logout user.",
            description = "This endpoint receives refresh token for logout.",
-           tags = "Manager Token",
+           tags = {"Manager Token"},
            responses = @ApiResponse(responseCode = "204", description = "No Content")
    )
    @DefaultPublicAPIResponses

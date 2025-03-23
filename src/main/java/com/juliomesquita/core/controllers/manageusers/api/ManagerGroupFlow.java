@@ -15,31 +15,30 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping(value = "/groups")
 @Tag(name = "Manager Groups", description = "API de gerenciamento de grupos.")
 public interface ManagerGroupFlow {
    @Operation(
            operationId = "createGroup",
            summary = "Create group.",
            description = "This endpoint receives group data for create.",
-           tags = "Manager Groups",
+           tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "201", description = "Created"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PostMapping()
+   @PostMapping("/groups")
    ResponseEntity<?> createGroup(@RequestBody CreateGroupRequest request);
 
    @Operation(
            operationId = "updateGroup",
            summary = "Update group.",
            description = "This endpoint receives and data for group.",
-           tags = "Manager Groups",
+           tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
    )
    @DefaultAuthAPIResponses
-   @PutMapping("/{groupId}")
+   @PutMapping("/groups/{groupId}")
    ResponseEntity<?> updateGroup(
            @PathVariable(name = "groupId") UUID groupId,
            @RequestBody CreateGroupRequest request
@@ -49,11 +48,11 @@ public interface ManagerGroupFlow {
            operationId = "deleteGroup",
            summary = "Delete Group.",
            description = "This endpoint receives groupId for delete.",
-           tags = "Manager Groups",
+           tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "204", description = "No Content")
    )
    @DefaultAuthAPIResponses
-   @DeleteMapping("/{groupId}")
+   @DeleteMapping("/groups/{groupId}")
    ResponseEntity<?> deleteGroup(
            @PathVariable(name = "groupId") UUID groupId
    );
@@ -62,10 +61,10 @@ public interface ManagerGroupFlow {
            operationId = "findGroups",
            summary = "Find all groups.",
            description = "This endpoint returns all groups.",
-           tags = "Manager Groups",
+           tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListGroupsInfosResponse.class))})
    )
    @DefaultAuthAPIResponses
-   @GetMapping()
+   @GetMapping("/groups")
    ResponseEntity<?> findGroups();
 }
