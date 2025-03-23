@@ -32,6 +32,6 @@ configs:
     auth-server-url: http://localhost:9090
     auth-server-url-admin: http://localhost:9090/admin/realms/${configs.keycloak.realm}
     client-id: project-core-rest-api
-    client-secret: ${CLIENT_SECRET:s7EQSZYHFMMboDdYyLXuXAAkHHHTK4z3}
+    client-secret: ${CLIENT_SECRET:rDRZmvZM6F1DFK37L6OYMZZ1veGZIYJU}
     admin-user: project-core-rest-api
-    admin-password: s7EQSZYHFMMboDdYyLXuXAAkHHHTK4z3
+    admin-password: rDRZmvZM6F1DFK37L6OYMZZ1veGZIYJU

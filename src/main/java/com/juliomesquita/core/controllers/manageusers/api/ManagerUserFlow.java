@@ -10,8 +10,10 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -37,7 +39,8 @@ public interface ManagerUserFlow {
            description = "This endpoint receives user data for update.",
            tags = {"Manager Users"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = UpdateUserRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = UpdateUserRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PutMapping("/users/{userId}")
@@ -51,7 +54,8 @@ public interface ManagerUserFlow {
            summary = "Delete user.",
            description = "This endpoint receives userId for deleted.",
            tags = {"Manager Users"},
-           responses = @ApiResponse(responseCode = "204", description = "No Content")
+           responses = @ApiResponse(responseCode = "204", description = "No Content"),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @DeleteMapping("/users/{userId}")
@@ -62,7 +66,8 @@ public interface ManagerUserFlow {
            summary = "Activate or deactivate user.",
            description = "This endpoint receives userId and data for user.",
            tags = {"Manager Users"},
-           responses = @ApiResponse(responseCode = "200", description = "OK")
+           responses = @ApiResponse(responseCode = "200", description = "OK"),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PutMapping("/users/{userId}/enable")
@@ -76,7 +81,8 @@ public interface ManagerUserFlow {
            summary = "Find all users.",
            description = "This endpoint returns all users.",
            tags = {"Manager Users"},
-           responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = Pagination.class))})
+           responses = @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(schema = @Schema(implementation = Pagination.class))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @GetMapping("/users")

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,8 @@ public interface ManagerRoleFlow {
            description = "This endpoint receives roles data for create.",
            tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "201", description = "Created"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PostMapping("/roles")
@@ -33,7 +35,8 @@ public interface ManagerRoleFlow {
            description = "This endpoint receives roleName and data for role.",
            tags = {"Manager Roles"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateRoleRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PutMapping("/roles/{roleName}")
@@ -47,7 +50,8 @@ public interface ManagerRoleFlow {
            summary = "Delete Role.",
            description = "This endpoint receives roleName for delete.",
            tags = {"Manager Roles"},
-           responses = @ApiResponse(responseCode = "204", description = "No Content")
+           responses = @ApiResponse(responseCode = "204", description = "No Content"),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @DeleteMapping("/roles/{roleName}")
@@ -60,7 +64,8 @@ public interface ManagerRoleFlow {
            summary = "Find all roles.",
            description = "This endpoint returns all roles.",
            tags = {"Manager Roles"},
-           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListRolesInfoResponse.class))})
+           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListRolesInfoResponse.class))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @GetMapping("/roles")

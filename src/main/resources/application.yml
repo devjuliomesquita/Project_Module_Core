@@ -31,6 +31,8 @@ spring:
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
   security:
+    basic:
+      enabled: false
     oauth2:
       client:
         registration:

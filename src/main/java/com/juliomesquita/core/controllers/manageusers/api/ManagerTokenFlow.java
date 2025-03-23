@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public interface ManagerTokenFlow {
            requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = LoginUserRequest.exampleRequest))})
    )
    @DefaultPublicAPIResponses
-   @PostMapping("/login")
+   @PostMapping("/auth/login")
    ResponseEntity<?> loginUser(@RequestBody LoginUserRequest request);
 
    @Operation(
@@ -35,7 +36,7 @@ public interface ManagerTokenFlow {
            responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = UserLoginResponse.class))})
    )
    @DefaultPublicAPIResponses
-   @PostMapping("/refresh-token")
+   @PostMapping("/auth/refresh-token")
    ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request);
 
    @Operation(
@@ -46,6 +47,6 @@ public interface ManagerTokenFlow {
            responses = @ApiResponse(responseCode = "204", description = "No Content")
    )
    @DefaultPublicAPIResponses
-   @PostMapping("/logout")
+   @PostMapping("/auth/logout")
    ResponseEntity<?> logoutUser(@RequestBody RefreshTokenRequest request);
 }

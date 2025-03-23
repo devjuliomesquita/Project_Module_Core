@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,8 @@ public interface ManagerGroupFlow {
            description = "This endpoint receives group data for create.",
            tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "201", description = "Created"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PostMapping("/groups")
@@ -35,7 +37,8 @@ public interface ManagerGroupFlow {
            description = "This endpoint receives and data for group.",
            tags = {"Manager Groups"},
            responses = @ApiResponse(responseCode = "200", description = "OK"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = CreateGroupRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PutMapping("/groups/{groupId}")
@@ -49,7 +52,8 @@ public interface ManagerGroupFlow {
            summary = "Delete Group.",
            description = "This endpoint receives groupId for delete.",
            tags = {"Manager Groups"},
-           responses = @ApiResponse(responseCode = "204", description = "No Content")
+           responses = @ApiResponse(responseCode = "204", description = "No Content"),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @DeleteMapping("/groups/{groupId}")
@@ -62,7 +66,8 @@ public interface ManagerGroupFlow {
            summary = "Find all groups.",
            description = "This endpoint returns all groups.",
            tags = {"Manager Groups"},
-           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListGroupsInfosResponse.class))})
+           responses = @ApiResponse(responseCode = "200", description = "OK", content = {@Content(schema = @Schema(implementation = ListGroupsInfosResponse.class))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @GetMapping("/groups")

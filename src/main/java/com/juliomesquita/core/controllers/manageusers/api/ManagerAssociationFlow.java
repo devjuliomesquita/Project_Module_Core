@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,8 @@ public interface ManagerAssociationFlow {
            description = "This endpoint receives userId and roles data for associate.",
            tags = {"Manager Associations"},
            responses = @ApiResponse(responseCode = "200", description = "Ok"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PostMapping("/associations/user/{userId}/role")
@@ -39,7 +41,8 @@ public interface ManagerAssociationFlow {
            description = "This endpoint receives groupId and roles data for associate.",
            tags = {"Manager Associations"},
            responses = @ApiResponse(responseCode = "200", description = "Ok"),
-           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))})
+           requestBody = @RequestBody(content = {@Content(examples = @ExampleObject(value = ListRolesRequest.exampleRequest))}),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PostMapping("/associations/group/{groupId}/role")
@@ -53,7 +56,8 @@ public interface ManagerAssociationFlow {
            summary = "Associate or disassociate User a with group.",
            description = "This endpoint receives groupId and userId for associate.",
            tags = {"Manager Associations"},
-           responses = @ApiResponse(responseCode = "200", description = "Ok")
+           responses = @ApiResponse(responseCode = "200", description = "Ok"),
+           security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses
    @PostMapping("/associations/group/{groupId}/user/{userId}")

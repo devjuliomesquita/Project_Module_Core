@@ -19,7 +19,7 @@ public record CreateUserRequest(
              "lastName": "Doe",
              "enabled": true,
              "emailVerified": false,
-             "password": "password",
+             "password": "password"
            }
            """;
 }
