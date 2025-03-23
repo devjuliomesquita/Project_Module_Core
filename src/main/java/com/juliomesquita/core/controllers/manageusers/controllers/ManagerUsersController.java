@@ -264,47 +264,66 @@ public class ManagerUsersController implements ManagerUsersAPI {
 
    @Override
    public ResponseEntity<?> associateOrDisassociateRoleUser(final UUID userId, @RequestBody final ListRolesRequest request) {
+      Function<Notification, ResponseEntity<?>> onError =
+              notification -> ResponseEntity.badRequest().body(notification);
+      Function<Void, ResponseEntity<?>> onSuccess =
+              response -> ResponseEntity.noContent().build();
+
       final List<AssociateRolesKeycloak> roles = ManagerUserPresenter.listAssociateRolesKeycloak.apply(
               request.listRoles());
+
       if (request.associate()) {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .associateRoleUser(userId.toString(), roles);
+                 .associateRoleUser(userId.toString(), roles)
+                 .fold(onError, onSuccess);
       } else {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .disassociateRoleUser(userId.toString(), roles);
+                 .disassociateRoleUser(userId.toString(), roles)
+                 .fold(onError, onSuccess);
       }
-      return ResponseEntity.noContent().build();
    }
 
    @Override
    public ResponseEntity<?> associateOrDisassociateRoleGroup(final UUID groupId, @RequestBody final ListRolesRequest request) {
+      Function<Notification, ResponseEntity<?>> onError =
+              notification -> ResponseEntity.badRequest().body(notification);
+      Function<Void, ResponseEntity<?>> onSuccess =
+              response -> ResponseEntity.noContent().build();
+
       final List<AssociateRolesKeycloak> roles = ManagerUserPresenter.listAssociateRolesKeycloak.apply(
               request.listRoles());
       if (request.associate()) {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .associateRoleGroup(groupId.toString(), roles);
+                 .associateRoleGroup(groupId.toString(), roles)
+                 .fold(onError, onSuccess);
       } else {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .disassociateRoleGroup(groupId.toString(), roles);
+                 .disassociateRoleGroup(groupId.toString(), roles)
+                 .fold(onError, onSuccess);
       }
-      return ResponseEntity.noContent().build();
    }
 
    @Override
    public ResponseEntity<?> associateOrDisassociateUserGroup(final UUID groupId, final UUID userId, final Boolean associate) {
+      Function<Notification, ResponseEntity<?>> onError =
+              notification -> ResponseEntity.badRequest().body(notification);
+      Function<Void, ResponseEntity<?>> onSuccess =
+              response -> ResponseEntity.noContent().build();
+
       if (associate) {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .associateUserGroup(userId.toString(), groupId.toString());
+                 .associateUserGroup(userId.toString(), groupId.toString())
+                 .fold(onError, onSuccess);
       } else {
-         this.keycloakFacade
+         return this.keycloakFacade
                  .getAssociateFlow()
-                 .disassociateUserGroup(userId.toString(), groupId.toString());
+                 .disassociateUserGroup(userId.toString(), groupId.toString())
+                 .fold(onError, onSuccess);
       }
-      return ResponseEntity.noContent().build();
    }
 }
