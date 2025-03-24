@@ -37,7 +37,7 @@ services:
       - 9090:8080
     command: start-dev --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false
     volumes:
-      - .docker/keycloak-themes:/opt/keycloak/themes
+      - ./keycloak-themes:/opt/keycloak/themes
     depends_on:
       postgres:
         condition: service_healthy
