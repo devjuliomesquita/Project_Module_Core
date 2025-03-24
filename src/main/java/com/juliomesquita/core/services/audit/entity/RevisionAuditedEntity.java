@@ -7,7 +7,7 @@ import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
-import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,7 +24,7 @@ public class RevisionAuditedEntity {
 
    @RevisionTimestamp
    @Column(name = "revision_data", nullable = false)
-   private OffsetDateTime revisionData;
+   private Date revisionData;
 
    @JsonIgnore
    @Column(name = "action_done_by", nullable = false)
@@ -45,11 +45,11 @@ public class RevisionAuditedEntity {
       this.id = id;
    }
 
-   public OffsetDateTime getRevisionData() {
+   public Date getRevisionData() {
       return revisionData;
    }
 
-   public void setRevisionData(OffsetDateTime revisionData) {
+   public void setRevisionData(Date revisionData) {
       this.revisionData = revisionData;
    }
 
