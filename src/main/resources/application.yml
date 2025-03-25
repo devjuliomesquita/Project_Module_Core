@@ -52,7 +52,6 @@ spring:
           issuer-uri: ${configs.keycloak.auth-server-url}/realms/${configs.keycloak.realm}
           jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
-
 server:
   port: 8080
   servlet:
@@ -80,3 +79,20 @@ springdoc:
     doc-expansion: none
     operations-sorter: alpha
     filter: true
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health, info, metrics, prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+  observations:
+    key-values:
+      application: ${spring.application.name}
+  tracing:
+    sampling:
+      probability: 1.0

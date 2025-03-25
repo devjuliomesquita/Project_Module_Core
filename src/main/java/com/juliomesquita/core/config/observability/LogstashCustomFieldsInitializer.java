@@ -1,4 +1,4 @@
-package com.juliomesquita.core.config.logging;
+package com.juliomesquita.core.config.observability;
 
 import ch.qos.logback.classic.LoggerContext;
 import net.logstash.logback.argument.StructuredArguments;

@@ -14,7 +14,7 @@ services:
       - ./dbdata:/var/lib/postgresql/data
       - ./keycloak/create-keycloak-database.sql:/docker-entrypoint-initdb.d/create-keycloak-database.sql
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - project_core_network
     healthcheck:
@@ -34,7 +34,7 @@ services:
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: postgres
     ports:
-      - 9090:8080
+      - "9090:8080"
     command: start-dev --spi-theme-static-max-age=-1 --spi-theme-cache-themes=false --spi-theme-cache-templates=false
     volumes:
       - ./keycloak-themes:/opt/keycloak/themes
@@ -50,6 +50,8 @@ services:
     command: [ "-config.file=/etc/loki/local-config.yaml" ]
     ports:
       - "3100:3100"
+    networks:
+      - project_core_network
 
   elasticsearch:
     container_name: project_core_elasticsearch
@@ -80,6 +82,46 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
+    networks:
+      - project_core_network
+
+  prometheus:
+    container_name: project_core_prometheus
+    image: prom/prometheus:v2.46.0
+    command:
+      - --enable-feature=exemplar-storage
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9091:9090"
+    networks:
+      - project_core_network
+
+  tempo:
+    container_name: project_core_tempo
+    image: grafana/tempo:2.2.2
+    command: [ '-config.file=/etc/tempo.yaml' ]
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo.yaml:ro
+      - ./tempo/tempo-data:/tmp/tempo
+    ports:
+      - '3110:3100' # Tempo
+      - '9411:9411' # zipkin
+    networks:
+      - project_core_network
+
+  grafana:
+    container_name: project_core_grafana
+    image: grafana/grafana:10.1.0
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - '3000:3000'
     networks:
       - project_core_network
 
