@@ -18,18 +18,18 @@ Keycloak, Grafana** e demais serviços necessários.
 
 ### 🌐 Banco de Dados e Auditoria
 
-- Integração com **PostgreSQL**, garantindo robustez e confiabilidade.
+- Integração com **PostgreSQL** e **Spring Data**, garantindo robustez e confiabilidade.
 - Gerenciamento de migrations utilizando **Flyway**, permitindo versões controladas do banco de dados.
 - **Auditoria de dados** via **Hibernate Envers**, possibilitando o rastreamento de alterações nas entidades.
 
 ### ⛓️ Autenticação e Autorização
 
-- Implementação baseada em **Keycloak**, proporcionando um fluxo seguro de autenticação e permissões via OAuth2 e OpenID
+- Implementação da segurança com **Spring Security** baseada em **Keycloak**, proporcionando um fluxo seguro de autenticação e permissões via OAuth2 e OpenID
   Connect.
 
 ### 📘 Documentação Automatizada
 
-- **Swagger** configurado para documentar a API dinamicamente, facilitando a exploração dos endpoints.
+- **Swagger** e **Spring Doc's** configurado para documentar a API dinamicamente, facilitando a exploração dos endpoints.
 
 ### ⚡ Tratamento de Erros e Notificações
 
@@ -54,7 +54,8 @@ Keycloak, Grafana** e demais serviços necessários.
 
 - **Centralização de logs** com **Elasticsearch** via **Loki**, garantindo rastreabilidade e análise de eventos.
 - **Métricas com Prometheus**, permitindo a coleta de informações de desempenho e saúde da aplicação.
-- **Tracing de requisições com Tempo**, possibilitando a análise detalhada do fluxo das chamadas dentro do ecossistema **Grafana**.
+- **Tracing de requisições com Tempo**, possibilitando a análise detalhada do fluxo das chamadas.
+- **Grafana** foi utilizado como ecossistema e integração dessas ferramentas para dashboard de monitoramento.
 
 ### 🛠️ Setup de Testes e Perfis de Ambiente
 
@@ -73,27 +74,28 @@ Keycloak, Grafana** e demais serviços necessários.
 
 ## ✅ Checklist de Recursos Implementados
 
-- [x] Integração com **PostgreSQL**
+- [x] Integração com **PostgreSQL** e **Spring Data**
 - [x] Gerenciamento de migrations com **Flyway**
 - [x] Auditoria de dados com **Hibernate Envers**
-- [x] Autenticação e autorização com **Keycloak**
-- [x] Documentação da API com **Swagger**
-- [x] Tratamento de exceções com **Notification Pattern**
-- [x] Serviço de e-mail configurado
-- [x] Integração com **Amazon S3** (ou equivalente)
-- [x] Modelagem baseada em **DDD**
-- [x] Exemplos de relacionamentos entre entidades
-- [x] Observabilidade: Logs com **Loki**, Métricas com **Prometheus**, Tracing com **Tempo**
-- [x] Setup de testes com **Test Containers e Integração**
+- [x] Autenticação e autorização com **Keycloak** e **Spring Security**
+- [x] Documentação da API com **Swagger** e **Spring Doc's**
+- [x] Observabilidade: Logs com **Loki** e **ElasticSearch**, Métricas com **Prometheus**, Tracing com **Tempo**
+- [x] Setup de testes com **Test Containers, Integração, Unitários e End To End**
 - [x] Suporte a múltiplos perfis (**test, development, production**)
 - [x] Substituição do **Tomcat** pelo **Undertow**
 - [x] **Docker Compose** para facilitar a inicialização das dependências do projeto
+- [x] Tratamento de exceções com **Notification Pattern**
+- [ ] Serviço de e-mail configurado
+- [ ] Integração com **Amazon S3** (ou equivalente)
+- [ ] Modelagem baseada em **DDD**
+- [ ] Exemplos de relacionamentos entre entidades
 
 ---
 
 ## ⚙️ Tecnologias Utilizadas
 
-- **Java** + **Spring Boot**
+- **Java**
+- **Spring Boot, Spring Data, Spring Security, Spring Doc's**
 - **PostgreSQL** + **Flyway**
 - **Hibernate Envers** (Auditoria de Dados)
 - **Keycloak** (OAuth2 / OpenID Connect)
@@ -111,7 +113,7 @@ Keycloak, Grafana** e demais serviços necessários.
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/Projec_Core.git
+   git clone https://github.com/devjuliomesquita/Project_Module_Core.git
    ```
 2. Configure as variáveis de ambiente (Exemplo no arquivo `.env.example`).
 3. Suba os containers necessários via **Docker Compose**:
@@ -122,12 +124,6 @@ Keycloak, Grafana** e demais serviços necessários.
    ```bash
    mvn spring-boot:run
    ```
-
----
-
-## 📚 Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir **issues** e **pull requests**.
 
 ---
 
