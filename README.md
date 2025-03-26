@@ -129,5 +129,5 @@ Keycloak, Grafana** e demais serviços necessários.
 
 ## 📝 Licença
 
-Este projeto está sob a **licença MIT** - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a **licença MIT** - veja o arquivo [LICENSE](https://github.com/devjuliomesquita/Project_Module_Core/blob/main/LICENSE) para mais detalhes.
 
