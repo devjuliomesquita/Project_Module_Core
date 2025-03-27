@@ -20,12 +20,12 @@ import java.util.UUID;
 import java.util.function.Function;
 
 
-public class StorageServiceImpl implements StorageService {
+public class S3StorageServiceImpl implements S3StorageService {
    private final S3Client client;
    private final S3Presigner presigner;
    private final String bucketName;
 
-   public StorageServiceImpl(
+   public S3StorageServiceImpl(
            final String region,
            final String bucketName,
            final String accessKey,
