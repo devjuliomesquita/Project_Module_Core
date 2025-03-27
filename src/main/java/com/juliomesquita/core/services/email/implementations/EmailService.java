@@ -1,11 +1,9 @@
 package com.juliomesquita.core.services.email.implementations;
 
 import com.juliomesquita.core.services.email.dtos.EmailCustomDto;
-import com.juliomesquita.core.shared.validations.APIError;
 import com.juliomesquita.core.shared.validations.Notification;
 import io.vavr.API;
 import io.vavr.control.Either;
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
