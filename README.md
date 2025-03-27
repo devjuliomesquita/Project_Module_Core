@@ -85,8 +85,8 @@ Keycloak, Grafana** e demais serviços necessários.
 - [x] Substituição do **Tomcat** pelo **Undertow**
 - [x] **Docker Compose** para facilitar a inicialização das dependências do projeto
 - [x] Tratamento de exceções com **Notification Pattern**
-- [ ] Serviço de e-mail configurado
-- [ ] Integração com **Amazon S3** (ou equivalente)
+- [x] Serviço de e-mail configurado
+- [x] Integração com **Amazon S3** e **Google Cloud Storage** (ou equivalente)
 - [ ] Modelagem baseada em **DDD**
 - [ ] Exemplos de relacionamentos entre entidades
 
@@ -100,7 +100,7 @@ Keycloak, Grafana** e demais serviços necessários.
 - **Hibernate Envers** (Auditoria de Dados)
 - **Keycloak** (OAuth2 / OpenID Connect)
 - **Swagger** (API Docs)
-- **Amazon S3** (ou equivalente)
+- **Amazon S3, Google Cloud Storage** (ou equivalente)
 - **Elasticsearch + Loki** (Log centralizado)
 - **Prometheus** (Métricas)
 - **Tempo (Tracing)**

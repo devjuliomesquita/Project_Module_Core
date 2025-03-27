@@ -1,6 +1,7 @@
 package com.juliomesquita.core.services.email.implementations;
 
 import com.juliomesquita.core.services.email.dtos.EmailCustomDto;
+import com.juliomesquita.core.services.email.interfaces.EmailService;
 import com.juliomesquita.core.shared.validations.Notification;
 import io.vavr.API;
 import io.vavr.control.Either;
@@ -21,12 +22,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 @Component
-public class EmailService {
-   private static final Logger log = LoggerFactory.getLogger(EmailService.class);
+public class EmailServiceImpl implements EmailService {
+   private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
    private final JavaMailSender mailSender;
    private final TemplateEngine templateEngine;
 
-   public EmailService(
+   public EmailServiceImpl(
            final JavaMailSender mailSender,
            final TemplateEngine templateEngine
    ) {
