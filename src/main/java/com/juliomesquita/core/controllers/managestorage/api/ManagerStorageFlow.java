@@ -2,11 +2,11 @@ package com.juliomesquita.core.controllers.managestorage.api;
 
 import com.juliomesquita.core.controllers.managestorage.dtos.FileIdResponse;
 import com.juliomesquita.core.controllers.managestorage.dtos.UrlSignedResponse;
-import com.juliomesquita.core.controllers.manageusers.dtos.ListRolesInfoResponse;
 import com.juliomesquita.core.controllers.shared.DefaultAuthAPIResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,14 +27,18 @@ public interface ManagerStorageFlow {
    )
    @DefaultAuthAPIResponses
    @PostMapping("/upload")
-   ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("folder") String folder);
+   ResponseEntity<?> uploadFile(@RequestParam("file")
+                                @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(type = "string", format = "binary")))
+                                MultipartFile file,
+                                @RequestParam("folder") String folder);
 
    @Operation(
            operationId = "downloadFile",
            summary = "Download File.",
            description = "This endpoint receives a fileId for download.",
            tags = {"Manager Storage"},
-           responses = @ApiResponse(responseCode = "200", description = "Ok"),
+           responses = @ApiResponse(responseCode = "200", description = "Ok", content = @Content(mediaType = "application/octet-stream",
+                   schema = @Schema(type = "string", format = "binary"))),
            security = @SecurityRequirement(name = "bearerAuth")
    )
    @DefaultAuthAPIResponses

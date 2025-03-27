@@ -36,7 +36,7 @@ configs:
     admin-user: project-core-rest-api
     admin-password: rDRZmvZM6F1DFK37L6OYMZZ1veGZIYJU
   bucket:
-    region:
-    name:
-    access-key:
-    secret-key:
+    region: ${REGION:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
+    name: ${NAME:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
+    access-key: ${ACCESS_KEY:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
+    secret-key: ${SECRET_KEY:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
