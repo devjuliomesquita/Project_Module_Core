@@ -1,12 +1,12 @@
-package com.juliomesquita.core.services.storage.services;
+package com.juliomesquita.core.services.storage.implementations;
 
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
+import com.juliomesquita.core.services.storage.interfaces.GoogleCloudStorageService;
 import com.juliomesquita.core.shared.validations.Notification;
 import io.vavr.API;
 import io.vavr.control.Either;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-public class GoogleCloudStorageServiceImpl {
+public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService {
    private final Storage storage;
    private final String bucketName;
 
@@ -35,6 +35,19 @@ public class GoogleCloudStorageServiceImpl {
       return API.Try(() -> {
                  this.storage.create(blobInfo, file.getBytes());
                  return String.format("https://storage.googleapis.com/%s/%s", bucketName, file.getOriginalFilename());
+              })
+              .toEither()
+              .bimap(Notification::create, Function.identity());
+   }
+
+   public Either<Notification, Resource> download(final String fileId) {
+      final BlobId blobId = BlobId.of(this.bucketName, fileId);
+      return API.Try(() -> {
+                 final Blob blob = this.storage.get(blobId);
+                 if (blob == null) {
+                    return null;
+                 }
+                 return new ByteArrayResource(blob.getContent());
               })
               .toEither()
               .bimap(Notification::create, Function.identity());
