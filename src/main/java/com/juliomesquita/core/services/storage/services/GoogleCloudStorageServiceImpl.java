@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -23,8 +24,10 @@ public class GoogleCloudStorageServiceImpl {
       this.storage = StorageOptions.getDefaultInstance().getService();
    }
 
-   public Either<Notification, String> upload(final MultipartFile file) {
-      final BlobId blobId = BlobId.of(this.bucketName, Objects.requireNonNull(file.getOriginalFilename()));
+   public Either<Notification, String> upload(final MultipartFile file, final String folder, final String hash) {
+      final String generatedHash = hash != null ? hash : UUID.randomUUID().toString();
+      final String fileId = String.format("%s/%s::::%s", folder, generatedHash, file.getOriginalFilename());
+      final BlobId blobId = BlobId.of(this.bucketName, fileId);
       final BlobInfo blobInfo = BlobInfo
               .newBuilder(blobId)
               .setContentType(file.getContentType())
