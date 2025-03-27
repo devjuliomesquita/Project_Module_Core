@@ -40,3 +40,8 @@ configs:
     name: ${NAME:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
     access-key: ${ACCESS_KEY:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
     secret-key: ${SECRET_KEY:t44A1Kq2CVplt012Kva51KUxNdQxgpA5}
+  email:
+    host: smtp.gmail.com
+    port: 587
+    username: seuemail@gmail.com
+    password: suasenha

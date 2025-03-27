@@ -51,7 +51,17 @@ spring:
         jwt:
           issuer-uri: ${configs.keycloak.auth-server-url}/realms/${configs.keycloak.realm}
           jwt-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-
+  mail:
+    host: ${configs.email.host}
+    port: ${configs.email.port}
+    username: ${configs.email.username}
+    password: ${configs.email.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8080
   servlet:

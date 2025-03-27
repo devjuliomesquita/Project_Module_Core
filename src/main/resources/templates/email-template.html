@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">Olá, <span th:text="${name}"></span>!</div>
+    <div class="content">
+        <p>Seu pedido foi processado com sucesso.</p>
+        <p>Obrigado por utilizar nossos serviços!</p>
+    </div>
+    <div class="footer">© 2025 - Projec_Core. Todos os direitos reservados.</div>
+</div>
+</body>
+</html>
